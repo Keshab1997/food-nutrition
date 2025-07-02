@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>বায়োলজি কুইজ (Group D)</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-blue-50 min-h-screen flex flex-col items-center justify-center px-4 py-8"
+  >
+    <div
+      class="w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 text-center space-y-6"
+    >
+      <h1 class="text-3xl font-bold text-blue-700">
+        🧬 বায়োলজি কুইজ<br />Group D এর জন্য তৈরি করেছেন
+        <span class="text-green-600">Keshab Sarkar</span>
+      </h1>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <a
+          href="Qset1.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 1</a
+        >
+        <a
+          href="Qset2.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 2</a
+        >
+        <a
+          href="Qset3.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 3</a
+        >
+        <a
+          href="Qset4.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 4</a
+        >
+        <a
+          href="Qset5.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 5</a
+        >
+        <a
+          href="Qset6.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 6</a
+        >
+        <a
+          href="Qset7.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 7</a
+        >
+        <a
+          href="Qset8.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 8</a
+        >
+        <a
+          href="Qset9.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 9</a
+        >
+        <a
+          href="Qset10.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 10</a
+        >
+        <a
+          href="Qset11.html"
+          class="quiz-set-btn py-4 px-6 rounded-lg font-semibold"
+          >Set 11</a
+        >
+      </div>
+
+      <div class="flex justify-center gap-4 pt-4">
+        <a
+          href="index.html"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >🏠 Home</a
+        >
+        <a
+          href="pdf.html"
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >📄 PDF</a
+        >
+        <a
+          href="explain.html"
+          class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition"
+          >📘 ব্যাখ্যা</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  // Function to set the theme based on user preference or system preference
+  function setTheme(theme) {
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }
+
+  // Function to toggle between light and dark mode
+  function toggleTheme() {
+    if (document.body.classList.contains("dark")) {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  }
+
+  // Event listener for the theme toggle button (assumed to exist)
+  document.addEventListener("DOMContentLoaded", function () {
+    const themeToggleBtn = document.createElement("button");
+    themeToggleBtn.textContent = "Toggle Dark Mode";
+    themeToggleBtn.classList.add(
+      "bg-gray-300",
+      "text-gray-700",
+      "px-4",
+      "py-2",
+      "rounded",
+      "hover:bg-gray-400",
+      "transition",
+      "duration-300",
+      "ease-in-out",
+    );
+    themeToggleBtn.style.position = "fixed";
+    themeToggleBtn.style.bottom = "20px";
+    themeToggleBtn.style.right = "20px";
+    document.body.appendChild(themeToggleBtn);
+
+    themeToggleBtn.addEventListener("click", toggleTheme);
+
+    // Check for saved theme preference or default to system preference
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      setTheme("dark");
+    }
+  });
+</script>
+<style>
+  body.dark {
+    background-color: #1a202c; /* Dark background color */
+    color: #edf2f7; /* Light text color */
+  }
+
+  body.dark .bg-white {
+    background-color: #2d3748; /* Darker background for content areas */
+  }
+
+  body.dark .text-blue-700 {
+    color: #90cdf4; /* Lighter blue for headings */
+  }
+
+  body.dark .text-green-600 {
+    color: #a3e635; /* Lighter green for names */
+  }
+
+  /* Add more specific dark mode styles as needed */
+  .quiz-set-btn {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+
+  body.dark .quiz-set-btn {
+    background-color: #4a5568;
+    color: #fff;
+  }
+</style>

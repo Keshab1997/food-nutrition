@@ -1,0 +1,382 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e0f2fe, #fff);
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Quiz Set Button */
+.quiz-set-btn {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border: 2px solid #93c5fd;
+  text-align: center;
+  color: #1e3a8a;
+  transition: all 0.3s ease;
+}
+
+.quiz-set-btn:hover {
+  background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+}
+
+/* Option button base */
+.option-btn {
+  transition: all 0.3s ease-in-out;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-size: 14px;
+}
+
+/* Smaller number font */
+.option-btn .text-lg {
+  font-size: 0.875rem !important;
+  font-weight: bold;
+}
+
+/* Correct */
+.option-btn.bg-green-500 {
+  background: #10b981 !important;
+  color: white;
+  border-color: #059669;
+  animation: pulse 0.6s ease-in-out;
+}
+
+/* Wrong */
+.option-btn.bg-red-500 {
+  background: #ef4444 !important;
+  color: white;
+  border-color: #dc2626;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25%,
+  75% {
+    transform: translateX(-3px);
+  }
+
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+.animate-shake {
+  animation: shake 0.6s ease-in-out;
+}
+
+/* Timer Box */
+#timer {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #b91c1c;
+}
+
+/* Add a class to blur the background */
+.blurred-background {
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+}
+
+/* Style for the overlay (the "Look ta ki ro vlo kora jabe" element) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Ensure it's on top of everything */
+}
+
+.overlay-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.option-btn {
+  font-size: 16px;
+  /* Increased font size */
+}
+
+.option-btn:hover {
+  background-color: #f0f0f0;
+  /* Example hover effect */
+  cursor: pointer;
+}
+
+/* Improved Quiz Set Button */
+.quiz-set-btn {
+  background: linear-gradient(45deg, #86efac, #34d399);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.quiz-set-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(45deg, #34d399, #10b981);
+}
+
+.quiz-set-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Option Button */
+.option-btn {
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.option-btn:hover {
+  background-color: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.option-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.option-btn.bg-green-500:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.option-btn.bg-red-500:hover {
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Modern Timer Box */
+#timer {
+  background-color: #fff7ed;
+  border: 1px solid #f97316;
+  color: #ea580c;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Refined Overlay */
+.overlay {
+  background-color: rgba(0, 0, 0, 0.3);
+  /* Slightly lighter overlay */
+  backdrop-filter: blur(8px);
+  /* Add backdrop blur */
+}
+
+.overlay-content {
+  background-color: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Rounded Option Buttons */
+.option-btn {
+  border-radius: 20px;
+  /* Adjust the value to control the roundness */
+}
+
+/* Review Card Styles */
+.review-card {
+  background-color: #f8fafc;
+  /* Light background */
+  border-radius: 12px;
+  /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+  padding: 24px;
+  /* Comfortable padding */
+  margin-bottom: 20px;
+  /* Space between cards */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  /* Smooth transition */
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  /* Slight lift on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  /* Enhanced shadow on hover */
+}
+
+.review-card h3 {
+  color: #334155;
+  /* Darker heading */
+  font-size: 1.25rem;
+  /* Slightly larger heading */
+  margin-bottom: 12px;
+  /* Space below heading */
+}
+
+.review-card p {
+  color: #64748b;
+  /* Medium gray text */
+  line-height: 1.6;
+  /* Improved readability */
+}
+
+.review-card .author {
+  font-style: italic;
+  color: #71717a;
+  margin-top: 16px;
+  text-align: right;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background: linear-gradient(135deg, #1f2937, #111827);
+  color: #f3f4f6;
+}
+
+body.dark-mode .review-card {
+  background-color: #374151;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .review-card h3 {
+  color: #f9fafb;
+}
+
+body.dark-mode .review-card p {
+  color: #d1d5db;
+}
+
+body.dark-mode .quiz-set-btn {
+  background: linear-gradient(45deg, #4ade80, #22c55e);
+  color: #f0fdf4;
+  border: 1px solid #16a34a;
+}
+
+body.dark-mode .quiz-set-btn:hover {
+  background: linear-gradient(45deg, #22c55e, #16a34a);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .option-btn {
+  background-color: #4b5563;
+  border: 1px solid #6b7280;
+  color: #f9fafb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .option-btn:hover {
+  background-color: #6b7280;
+}
+
+body.dark-mode #timer {
+  background-color: #4a154b;
+  border: 1px solid #be185d;
+  color: #fbcfe8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .overlay-content {
+  background-color: #374151;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+/* Day Mode Styles (applied by default) */
+body.day-mode {
+    background: linear-gradient(135deg, #e0f2fe, #fff);
+    color: #333; /* or any suitable day mode text color */
+}
+
+body.day-mode .review-card {
+    background-color: #f8fafc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.day-mode .review-card h3 {
+    color: #334155;
+}
+
+body.day-mode .review-card p {
+    color: #64748b;
+}
+
+body.day-mode .quiz-set-btn {
+    background: linear-gradient(45deg, #86efac, #34d399);
+    color: white;
+}
+
+body.day-mode .option-btn {
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    color: #333; /* or any suitable day mode text color */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+body.day-mode #timer {
+    background-color: #fff7ed;
+    border: 1px solid #f97316;
+    color: #ea580c;
+}
+
+body.day-mode .overlay {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+body.day-mode .overlay-content {
+    background-color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
