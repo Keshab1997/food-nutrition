@@ -8,6 +8,7 @@ let correctSound = new Audio("correct.mp3");
 let wrongSound = new Audio("wrong.mp3");
 
 let userAnswers = []; // আগের উত্তরগুলো সংরক্ষণের জন্য
+let shuffledOptionsPerQuestion = []; // প্রতিটি প্রশ্নের জন্য শাফেলড অপশন সংরক্ষণ
 
 // প্রশ্ন দেখানোর ফাংশন (শাফেলিংসহ)
 function shuffleArray(array) {
@@ -21,8 +22,10 @@ function showQuestion() {
   const container = document.getElementById("quiz-container");
   const q = quizSet.questions[currentQuestionIndex];
 
-  const shuffledOptions = [...q.options];
+  let shuffledOptions = [...q.options];
   shuffleArray(shuffledOptions);
+  // প্রশ্নের জন্য শাফেলড অপশন সংরক্ষণ
+  shuffledOptionsPerQuestion[currentQuestionIndex] = shuffledOptions;
 
   const correctAnswerIndex = shuffledOptions.indexOf(q.options[q.answer]);
 
@@ -79,7 +82,7 @@ function showQuestion() {
       correctSound.play();
     }
 
-    // এখানে ইনডেক্স সেভ করো (টেক্সট নয়)
+    // এখানে ইনডেক্স সেভ করো (শাফেলড অপশনের ইনডেক্স)
     userAnswers[currentQuestionIndex] = index;
 
     document.getElementById("correct-count").textContent = `✔️ ${correctCount}`;
@@ -116,7 +119,7 @@ function showFinalResult() {
   `;
 }
 
-// রিভিউ দেখানোর ফাংশন (undefined সমস্যা ঠিক করা হয়েছে)
+// রিভিউ দেখানোর ফাংশন (শাফেলড অপশন অনুযায়ী ফিক্সড)
 function showReview() {
   const container = document.getElementById("quiz-container");
   let reviewHTML = `
@@ -127,7 +130,15 @@ function showReview() {
   for (let i = 0; i < quizSet.questions.length; i++) {
     const q = quizSet.questions[i];
     const userAnswerIndex = userAnswers[i];
-    const isCorrect = userAnswerIndex === q.answer;
+
+    // সংরক্ষিত শাফেলড অপশন ব্যবহার করুন
+    const shuffledOptions = shuffledOptionsPerQuestion[i];
+    const correctAnswerIndex = shuffledOptions.indexOf(q.options[q.answer]);
+
+    let isCorrect = false;
+    if (userAnswerIndex !== undefined) {
+      isCorrect = userAnswerIndex === correctAnswerIndex;
+    }
 
     reviewHTML += `
       <div class="mb-4 p-4 border rounded ${
@@ -146,12 +157,10 @@ function showReview() {
 
     if (userAnswerIndex !== undefined) {
       reviewHTML += `
-          <p class="text-sm ${isCorrect ? "text-green-600" : "text-red-600"}">
-            আপনার উত্তর: ${q.options[userAnswerIndex]} (${
-              isCorrect ? "সঠিক" : "ভুল"
-            })
-          </p>
-        `;
+        <p class="text-sm ${isCorrect ? "text-green-600" : "text-red-600"}">
+          আপনার উত্তর: ${shuffledOptions[userAnswerIndex]} (${isCorrect ? "সঠিক" : "ভুল"})
+        </p>
+      `;
     } else {
       reviewHTML += `<p class="text-sm text-yellow-600">আপনি এই প্রশ্নের উত্তর দেননি।</p>`;
     }
@@ -168,7 +177,62 @@ function showReview() {
   container.innerHTML = reviewHTML;
 }
 
-// লিডারবোর্ড সংরক্ষণ এবং প্রদর্শন ফাংশনসমূহ (আগের মতোই)
+// লিডারবোর্ড ডেটা লোকাল স্টোরেজে সেইভ করার ফাংশন
+function saveScore() {
+  let name = prompt("আপনার নাম লিখুন:");
+  if (name) {
+    let scoreData = { name: name, score: correctCount };
+    let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+    leaderboard.push(scoreData);
+
+    // স্কোর অনুসারে সাজানো
+    leaderboard.sort((a, b) => b.score - a.score);
+
+    // সেরা ১০টি স্কোর রাখুন
+    leaderboard = leaderboard.slice(0, 10);
+
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    showLeaderboard();
+  }
+}
+
+// লিডারবোর্ড দেখানোর ফাংশন
+function showLeaderboard() {
+  let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+  let leaderboardHTML = `
+      <div class="text-center space-y-4">
+          <h2 class="text-xl font-bold text-purple-700">🏆 লিডারবোর্ড</h2>
+          <ol class="list-decimal list-inside text-lg text-gray-800">
+  `;
+
+  if (leaderboard.length === 0) {
+    leaderboardHTML += `<p>লিডারবোর্ডে এখনো কেউ নেই!</p>`;
+  } else {
+    leaderboard.forEach((item, index) => {
+      leaderboardHTML += `<li>${item.name} - ${item.score}</li>`;
+    });
+  }
+
+  leaderboardHTML += `
+          </ol>
+          <button onclick="resetLeaderboard()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+              লিডারবোর্ড রিসেট করুন
+          </button>
+          <button onclick="location.reload()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+              🔁 আবার খেলুন
+          </button>
+      </div>
+  `;
+
+  document.getElementById("quiz-container").innerHTML = leaderboardHTML;
+}
+
+// লিডারবোর্ড রিসেট করার ফাংশন
+function resetLeaderboard() {
+  localStorage.removeItem('leaderboard');
+  showLeaderboard();
+}
+
 // কীবোর্ড কন্ট্রোল সাপোর্ট
 function setupKeyboard() {
   document.addEventListener("keydown", function (event) {
@@ -187,7 +251,6 @@ function setupKeyboard() {
     }
   });
 }
-// অন্যান্য ফাংশন যেমন setupKeyboard(), saveScore(), showLeaderboard(), resetLeaderboard(), toggleTheme() ইত্যাদি আগের মতোই থাকবে
 
 // DOMContentLoaded ইভেন্টে কুইজ শুরু এবং প্রশ্ন শাফেল করা
 document.addEventListener("DOMContentLoaded", () => {
@@ -199,126 +262,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestion();
     setupKeyboard();
 
-    // থিম সেটআপ (আগের মতো)
+    // থিম সেটআপ (যদি থাকে, আগের মতোই রাখুন)
   } else {
     document.getElementById("quiz-container").innerHTML =
       "<p class='text-red-600'>প্রশ্ন লোড হয়নি।</p>";
   }
 });
-// Fixed: Review was not displaying correctly due to incorrect answer comparison.
-// The issue was at line `const isCorrect = userAnswerIndex === q.answer;`
-// The fix is to compare userAnswerIndex with the index of the correct option in shuffledOptions
-
-function showReview() {
-    const container = document.getElementById("quiz-container");
-    let reviewHTML = `
-      <div class="text-center space-y-4">
-        <h2 class="text-xl font-bold text-blue-700">📚 কুইজ রিভিউ</h2>
-    `;
-
-    for (let i = 0; i < quizSet.questions.length; i++) {
-        const q = quizSet.questions[i];
-        const userAnswerIndex = userAnswers[i];
-
-        // Get the shuffled options for the current question
-        const shuffledOptions = [...q.options];
-        shuffleArray(shuffledOptions);
-
-        // Find the index of the correct answer in the shuffled options
-        const correctAnswerIndex = shuffledOptions.indexOf(q.options[q.answer]);
-
-        // Determine if the user's answer is correct based on the shuffled options
-        let isCorrect = false;
-        if (userAnswerIndex !== undefined) {
-            isCorrect = userAnswerIndex === correctAnswerIndex;
-        }
-
-        reviewHTML += `
-          <div class="mb-4 p-4 border rounded ${isCorrect ? "border-green-500" : "border-red-500"}">
-            <h3 class="text-lg font-semibold text-gray-800 mb-2">
-              প্রশ্ন ${i + 1}: ${q.question}
-            </h3>
-            <p class="text-sm text-gray-700">
-              সঠিক উত্তর: ${q.options[q.answer]}
-            </p>
-            <p class="text-sm text-gray-700">
-                ব্যাখ্যা: ${q.explanation || "কোনো ব্যাখ্যা নেই"}
-            </p>
-        `;
-
-        if (userAnswerIndex !== undefined) {
-            reviewHTML += `
-              <p class="text-sm ${isCorrect ? "text-green-600" : "text-red-600"}">
-                আপনার উত্তর: ${shuffledOptions[userAnswerIndex]} (${isCorrect ? "সঠিক" : "ভুল"})
-              </p>
-            `;
-        } else {
-            reviewHTML += `<p class="text-sm text-yellow-600">আপনি এই প্রশ্নের উত্তর দেননি।</p>`;
-        }
-
-        reviewHTML += `</div>`;
-    }
-
-    reviewHTML += `
-        <button onclick="location.reload()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-          🔁 আবার দিন
-        </button>
-      </div>
-    `;
-    container.innerHTML = reviewHTML;
-}
-// লিডারবোর্ড ডেটা লোকাল স্টোরেজে সেইভ করার ফাংশন
-function saveScore() {
-    let name = prompt("আপনার নাম লিখুন:");
-    if (name) {
-        let scoreData = { name: name, score: correctCount };
-        let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
-        leaderboard.push(scoreData);
-
-        // স্কোর অনুসারে সাজানো
-        leaderboard.sort((a, b) => b.score - a.score);
-
-        // সেরা ১০টি স্কোর রাখুন
-        leaderboard = leaderboard.slice(0, 10);
-
-        localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
-        showLeaderboard();
-    }
-}
-
-// লিডারবোর্ড দেখানোর ফাংশন
-function showLeaderboard() {
-    let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
-    let leaderboardHTML = `
-        <div class="text-center space-y-4">
-            <h2 class="text-xl font-bold text-purple-700">🏆 লিডারবোর্ড</h2>
-            <ol class="list-decimal list-inside text-lg text-gray-800">
-    `;
-
-    if (leaderboard.length === 0) {
-        leaderboardHTML += `<p>লিডারবোর্ডে এখনো কেউ নেই!</p>`;
-    } else {
-        leaderboard.forEach((item, index) => {
-            leaderboardHTML += `<li>${item.name} - ${item.score}</li>`;
-        });
-    }
-
-    leaderboardHTML += `
-            </ol>
-            <button onclick="resetLeaderboard()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                লিডারবোর্ড রিসেট করুন
-            </button>
-            <button onclick="location.reload()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                🔁 আবার খেলুন
-            </button>
-        </div>
-    `;
-
-    document.getElementById("quiz-container").innerHTML = leaderboardHTML;
-}
-
-// লিডারবোর্ড রিসেট করার ফাংশন
-function resetLeaderboard() {
-    localStorage.removeItem('leaderboard');
-    showLeaderboard();
-}
